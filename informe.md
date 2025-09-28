@@ -14,7 +14,13 @@ Este laboratorio explora la optimización de hiperparámetros en modelos de apre
 
 ### ¿Qué son los Hiperparámetros?
 
-Los hiperparámetros son configuraciones que definen la arquitectura y el comportamiento de un modelo de aprendizaje automático, pero que no se aprenden durante el entrenamiento. A diferencia de los parámetros (como pesos y sesgos), los hiperparámetros deben ser establecidos antes del entrenamiento.
+Los hiperparámetros son configuraciones externas que controlan el proceso de aprendizaje de un modelo de machine learning. A diferencia de los parámetros internos del modelo (como los pesos de una red neuronal), los hiperparámetros no se aprenden directamente del conjunto de datos durante el entrenamiento. En cambio, deben ser especificados previamente por el desarrollador o determinados mediante técnicas de optimización.
+
+En el contexto de las redes neuronales profundas, los hiperparámetros incluyen aspectos como:
+- Arquitectura de la red (número de capas, unidades por capa)
+- Parámetros de entrenamiento (tasa de aprendizaje, tamaño del batch)
+- Técnicas de regularización (dropout, weight decay)
+- Funciones de activación y optimizadores
 
 ### Diferencias Clave: Parámetros vs Hiperparámetros
 
@@ -24,27 +30,114 @@ Los hiperparámetros son configuraciones que definen la arquitectura y el compor
 | Ejemplos        | Pesos, sesgos                      | Learning rate, número de capas, dropout rate |
 | Optimización    | Gradient descent, backpropagation  | Grid search, random search, Bayesian optimization |
 | Modificación    | Durante el entrenamiento           | Antes del entrenamiento |
+| Impacto         | Directo en las predicciones       | Indirecto a través de la estructura del modelo |
+
+### Tipos de Hiperparámetros
+
+#### Hiperparámetros de Arquitectura
+- **Número de capas:** Determina la profundidad de la red
+- **Unidades por capa:** Número de neuronas en cada capa
+- **Tipo de conexiones:** Fully connected, convolutional, recurrent
+
+#### Hiperparámetros de Entrenamiento
+- **Tasa de aprendizaje (learning rate):** Controla cuánto se ajustan los pesos en cada iteración
+- **Tamaño del batch:** Número de muestras procesadas antes de actualizar los pesos
+- **Número de épocas:** Iteraciones completas sobre el conjunto de datos
+
+#### Hiperparámetros de Regularización
+- **Dropout rate:** Porcentaje de neuronas desactivadas aleatoriamente
+- **Weight decay (L2 regularization):** Penalización por pesos grandes
+- **Early stopping:** Criterios para detener el entrenamiento
 
 ### Importancia de la Optimización de Hiperparámetros
 
-- **Rendimiento:** Puede mejorar la precisión del modelo en 5-15%
-- **Generalización:** Reduce overfitting y mejora la capacidad de generalización
-- **Eficiencia:** Optimiza el tiempo de entrenamiento y los recursos computacionales
-- **Robustez:** Hace el modelo más estable ante variaciones en los datos
+La optimización de hiperparámetros es crucial porque:
+
+- **Rendimiento:** Puede mejorar la precisión del modelo en 5-15% o más
+- **Generalización:** Reduce el overfitting al encontrar configuraciones que funcionen bien en datos no vistos
+- **Eficiencia:** Optimiza el uso de recursos computacionales y tiempo de entrenamiento
+- **Robustez:** Hace que el modelo sea más estable ante variaciones en los datos de entrada
+
+Estudios han mostrado que modelos con hiperparámetros mal ajustados pueden tener un rendimiento significativamente inferior, incluso con grandes cantidades de datos.
 
 ### Métodos Tradicionales vs Keras Tuner
 
-**Métodos Tradicionales:**
-- Manual: Ajuste basado en experiencia e intuición
-- Grid Search: Búsqueda exhaustiva en una grilla predefinida
-- Random Search: Selección aleatoria de combinaciones
+#### Métodos Tradicionales
+
+**Manual Tuning:**
+- Basado en experiencia del desarrollador
+- Iterativo y subjetivo
+- Limitado por el conocimiento humano
+- Tiempo-consuming para modelos complejos
+
+**Grid Search:**
+- Búsqueda exhaustiva en una grilla predefinida
+- Garantiza encontrar el óptimo dentro de la grilla
+- Computacionalmente costoso (crece exponencialmente con dimensiones)
+- Ineficiente para espacios de búsqueda grandes
+
+**Random Search:**
+- Muestreo aleatorio del espacio de hiperparámetros
+- Más eficiente que grid search en alta dimensionalidad
+- No garantiza encontrar el óptimo global
+- Requiere definir rangos de búsqueda
+
+#### Keras Tuner: Una Solución Moderna
 
 **Ventajas de Keras Tuner:**
-- Facilidad de uso: API simple y consistente
-- Algoritmos avanzados: Hyperband, Bayesian Optimization
-- Integración nativa: Funciona perfectamente con Keras/TensorFlow
-- Persistencia automática: Guarda resultados y permite reanudar búsquedas
-- Visualización: Herramientas integradas para análisis de resultados
+- **Facilidad de uso:** API simple y consistente integrada con Keras
+- **Algoritmos avanzados:** Hyperband y Bayesian Optimization
+- **Integración nativa:** Funciona perfectamente con TensorFlow/Keras
+- **Persistencia automática:** Guarda resultados y permite reanudar búsquedas
+- **Visualización:** Herramientas integradas para análisis de resultados
+- **Escalabilidad:** Maneja eficientemente espacios de búsqueda grandes
+
+### Algoritmos de Optimización en Keras Tuner
+
+#### Hyperband
+
+Hyperband es un algoritmo de optimización de hiperparámetros basado en el principio de asignación adaptativa de recursos. Desarrollado por Jamieson y Talwalkar en 2016, combina técnicas de búsqueda aleatoria con asignación de recursos adaptativa.
+
+**Principios Teóricos:**
+- **Asignación de Recursos:** En lugar de entrenar todos los modelos por el mismo tiempo, asigna más recursos a configuraciones prometedoras
+- **Bandas (Brackets):** Divide el presupuesto total en "bandas" con diferentes niveles de recursos
+- **Eliminación Temprana:** Descarta configuraciones pobres temprano para enfocarse en las mejores
+
+**Ventajas:**
+- Muy eficiente computacionalmente
+- Teóricamente fundamentado
+- Bueno para exploración inicial
+
+#### Bayesian Optimization
+
+La optimización bayesiana es un enfoque probabilístico que modela la función objetivo (rendimiento del modelo) como una función gaussiana. Utiliza este modelo para decidir qué configuraciones probar a continuación.
+
+**Principios Teóricos:**
+- **Función Objetivo:** El rendimiento del modelo como función de los hiperparámetros
+- **Modelo Probabilístico:** Gaussian Process para modelar la función objetivo
+- **Adquisición:** Función que balancea exploración vs explotación
+- **Actualización:** El modelo se actualiza con cada evaluación
+
+**Ventajas:**
+- Eficiente en evaluaciones costosas
+- Encuentra óptimos globales
+- Bueno para refinamiento fino
+
+### Dataset Breast Cancer
+
+El dataset Breast Cancer Wisconsin (Diagnostic) es un conjunto de datos clásico en machine learning para clasificación binaria. Contiene características computadas a partir de imágenes digitalizadas de aspirados con aguja fina (FNA) de masas mamarias.
+
+**Características del Dataset:**
+- **Muestras:** 569 instancias
+- **Características:** 30 atributos numéricos (media, error estándar y peor valor para 10 características)
+- **Clases:** 2 (benigno: 357, maligno: 212)
+- **Características principales:** radio, textura, perímetro, área, suavidad, compacidad, concavidad, puntos cóncavos, simetría, dimensión fractal
+
+**Relevancia:**
+- Problema médico real con impacto significativo
+- Dataset balanceado pero no perfectamente
+- Características altamente correlacionadas
+- Bueno para demostrar técnicas de clasificación
 
 ## Metodología
 
