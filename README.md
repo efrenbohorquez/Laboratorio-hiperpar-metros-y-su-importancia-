@@ -24,7 +24,7 @@ Este laboratorio explica de manera detallada y práctica los siguientes concepto
 ### 1. Conceptos Teóricos Fundamentales
 
 - **¿Qué son los hiperparámetros?** - Explicación clara de cómo se diferencian de los parámetros del modelo
-- **¿Por qué son importantes?** - Demostración de cómo pueden mejorar el rendimiento en 5-15% o más
+- **¿Por qué son importantes?** - Demostración de cómo pueden mejorar el rendimiento en 5-15% o más (mejora relativa en accuracy comparada con hiperparámetros por defecto)
 - **Métodos de optimización** - Comparación entre técnicas manuales, Grid Search, Random Search y métodos modernos
 
 ### 2. Algoritmos de Optimización Modernos
@@ -161,9 +161,10 @@ python optimizacion_hiperparametros_keras_tuner.py
 ### Lo que Aprenderás a Interpretar:
 
 #### 1. Comparación de Rendimiento
-- **Hyperband:** Típicamente alcanza ~96% de precisión en ~15 minutos
-- **Bayesian Optimization:** Típicamente alcanza ~97% de precisión en ~20 minutos
+- **Hyperband:** Típicamente alcanza ~96% de precisión en ~15 minutos (valores aproximados, varían según hardware)
+- **Bayesian Optimization:** Típicamente alcanza ~97% de precisión en ~20 minutos (valores aproximados, varían según hardware)
 - **Interpretación:** Bayesian Optimization es más preciso pero requiere más tiempo
+- **Nota:** Los tiempos de ejecución son aproximados y dependen del hardware (CPU vs GPU, velocidad de procesador)
 
 #### 2. Mejores Hiperparámetros Encontrados
 Aprenderás a identificar:
@@ -229,7 +230,7 @@ El laboratorio demuestra que:
 
 #### Grid Search
 - **Qué es:** Probar todas las combinaciones en una grilla
-- **Problema:** Crece exponencialmente (10 parámetros con 3 valores = 59,049 combinaciones)
+- **Problema:** Crece exponencialmente (ejemplo: 10 parámetros con 3 valores cada uno = 3^10 = 59,049 combinaciones)
 - **Cuándo usar:** Pocos hiperparámetros y recursos abundantes
 
 #### Random Search
@@ -272,7 +273,7 @@ Este proyecto sigue las mejores prácticas modernas de machine learning y está 
 ### ¿Cuánto tiempo toma completar el laboratorio?
 **2-2.5 horas** incluyendo:
 - Lectura de conceptos: 40 minutos
-- Ejecución de experimentos: 35 minutos
+- Ejecución de experimentos: 35-50 minutos (depende del hardware)
 - Análisis de resultados: 45 minutos
 
 ### ¿Necesito GPU para ejecutarlo?
